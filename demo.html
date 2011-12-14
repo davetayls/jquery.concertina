@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>jQuery.concertina - light-weight concertina</title>
+        <meta name="viewport" content="width=550" />
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script src="jquery.concertina.js"></script>
+        <link rel="stylesheet" href="jquery.concertina.css">
+        <style type="text/css">
+            body {
+            	font-family: arial, sans-serif;
+            }
+            pre code {
+            	background: #ddd; display: block; padding: 10px;
+            	-webkit-border-radius: 5px; -moz-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px;
+            }
+            #container {
+            	margin: 0 auto;
+            	width: 800px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <h1>jQuery.concertina demos</h1>
+
+            <h2>Only markup</h2>
+            <ul id="onlymarkup">
+                <li>
+                    <h2>header</h2>
+                    <div>content</div>
+                </li>
+                <li>
+                    <h2>header</h2>
+                    <div>content</div>
+                </li>
+                <li>
+                    <h2>header</h2>
+                    <div>content</div>
+                </li>
+            </ul>
+
+            <h2>Custom headers</h2>
+            <ul id="customheader">
+                <li>
+                    <div class="header">
+                        <h2>header</h2>
+                        <p>
+                            <a href="http://the-taylors.org">External link</a>
+                        </p>
+                    </div>
+                    <div>
+                        Lorem ipsum dolor sit amet
+                    </div>
+                </li>
+                <li>
+                    <div class="header">
+                        <h2>header</h2>
+                        <p>
+                        <a href="http://the-taylors.org">
+                            <span>External link</span>
+                        </a>
+                        </p>
+                    </div>
+                    <div>content</div>
+                </li>
+                <li>
+                    <div class="header">
+                        <h2>header</h2>
+                        <p>
+                            <a href="http://the-taylors.org">External link</a>
+                        </p>
+                    </div>
+                    <div>content</div>
+                </li>
+            </ul>
+
+            <script>
+                $('#onlymarkup').concertina();
+                $('#customheader').concertina({
+                    headerSelector: '.header'
+                });
+            </script>
+        </div>
+    </body>
+</html>
+
