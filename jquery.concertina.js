@@ -100,7 +100,8 @@
                     }
                 })
                 .keyup(function(e){
-                    if (e.keyCode === 13 && !$(e.target).closest(settings.excludeSelector).length) {
+                    if ((e.keyCode === 13 || e.keyCode === 32)
+                        && !$(e.target).closest(settings.excludeSelector).length) {
                         toggleItem($item, $content, settings);
                         e.preventDefault();
                     }
