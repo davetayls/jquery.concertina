@@ -1,5 +1,7 @@
 /**
     Lighweight Concertina Plugin
+    ============================
+
     <ul class="concertina">
         <li>
             <h2>header</h2>
@@ -31,16 +33,20 @@
             excludeSelector: 'a,input',
             speed: 200
         },
+
+        WRAPPER_CLASS = 'concertina',
         DATA_KEY = 'concertina.settings'
     ;
 
     var openItem = function($item, $content, settings) {
         $content.slideDown(settings.speed);
         $item.addClass(settings.selectedClass);
+        $item.trigger('concertina-openItem', [$item, $content, settings]);
     };
     var closeItem = function($item, $content, settings) {
-            $content.slideUp(settings.speed);
-            $item.removeClass(settings.selectedClass);
+        $content.slideUp(settings.speed);
+        $item.removeClass(settings.selectedClass);
+        $item.trigger('concertina-closeItem', [$item, $content, settings]);
     };
     var toggleItem = function($item, $content, settings) {
         if ($item.hasClass(settings.selectedClass)) {
@@ -54,7 +60,7 @@
         var settings,
             $content;
         if (typeof (options) === "string") {
-            settings = this.closest('.concertina').data(DATA_KEY);
+            settings = this.closest('.' + WRAPPER_CLASS).data(DATA_KEY);
             if (options === "expandAll") {
                 this.find(">." + settings.itemClass)
                     .removeClass(settings.selectedClass)
@@ -79,36 +85,41 @@
                 }
             }
         } else {
-            settings = $.extend({}, DEFAULT_SETTINGS, options);
+            return this.each(function(){
+                var $concertina = $(this),
+                    settings = $.extend({}, DEFAULT_SETTINGS, options);
 
-            this
-            .addClass('concertina')
-            .data(DATA_KEY, settings)
-            .find(settings.headerSelector)
-            .attr('tabindex', '0')
-            .each(function() {
-                var $item = $(this).parent().addClass(settings.itemClass);
-                var header = $(this).addClass(settings.headerClass);
-                var $content = $(this).next().addClass(settings.contentClass);
-                if (!$item.hasClass(settings.selectedClass)) {
-                    $content.hide();
-                }
-                header.click(function(e) {
-                    if (!$(e.target).closest(settings.excludeSelector).length) {
-                        toggleItem($item, $content, settings);
-                        e.preventDefault();
+                $concertina.addClass(WRAPPER_CLASS)
+                .data(DATA_KEY, settings)
+                .find(settings.headerSelector)
+                .attr('tabindex', '0')
+                .each(function() {
+                    var $this = $(this),
+                    $item = $this.parent().addClass(settings.itemClass),
+                    header = $this.addClass(settings.headerClass),
+                    $content = $this.next().addClass(settings.contentClass);
+
+                    if (!$item.hasClass(settings.selectedClass)) {
+                        $content.hide();
                     }
-                })
-                .keyup(function(e){
-                    if ((e.keyCode === 13 || e.keyCode === 32)
-                        && !$(e.target).closest(settings.excludeSelector).length) {
-                        toggleItem($item, $content, settings);
-                        e.preventDefault();
-                    }
+                    header.click(function(e) {
+                        if (!$(e.target).closest(settings.excludeSelector).length) {
+                            toggleItem($item, $content, settings);
+                            e.preventDefault();
+                        }
+                    })
+                    .keyup(function(e){
+                        if ((e.keyCode === 13 || e.keyCode === 32)
+                            && !$(e.target).closest(settings.excludeSelector).length) {
+                                toggleItem($item, $content, settings);
+                                e.preventDefault();
+                            }
+                    });
                 });
             });
         }
     };
     
 }(window.jQuery));
+
 
