@@ -55,6 +55,14 @@
             openItem($item, $content, settings);
         }
     };
+    var checkHash = function(settings) {
+        if (location.hash) {
+            var $hashSelected = $(location.hash);
+            if ($hashSelected.hasClass(settings.itemClass)) {
+                openItem($hashSelected, $hashSelected.find('>.' + settings.contentClass), settings);
+            }
+        }
+    };
 
     $.fn.concertina = function(options) {
         var settings,
@@ -87,7 +95,8 @@
         } else {
             return this.each(function(){
                 var $concertina = $(this),
-                    settings = $.extend({}, DEFAULT_SETTINGS, options);
+                    settings = $.extend({}, DEFAULT_SETTINGS, options)
+                ;
 
                 $concertina.addClass(WRAPPER_CLASS)
                 .data(DATA_KEY, settings)
@@ -96,6 +105,7 @@
                 .each(function() {
                     var $this = $(this),
                     $item = $this.parent().addClass(settings.itemClass),
+                    itemId = $item[0].id,
                     header = $this.addClass(settings.headerClass),
                     $content = $this.next().addClass(settings.contentClass);
 
@@ -116,6 +126,7 @@
                             }
                     });
                 });
+                checkHash(settings);
             });
         }
     };
